@@ -29,14 +29,16 @@ void print_gdtr(gdt_reg_t my_gdtr){
     }
 }
 
-/*void init_gdt(gdt_reg_t * gdt){
-
-}*/
+void init_gdt(gdt_reg_t * gdt){
+    
+}
 
 void tp(){
     gdt_reg_t my_gdtr;
     get_gdtr(my_gdtr);
 
     print_gdtr(my_gdtr);
+
+    init_gdt();
     
 }
