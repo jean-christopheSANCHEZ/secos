@@ -2,6 +2,8 @@
 #include <debug.h>
 #include <info.h>
 #include <segmem.h>
+#include <string.h>
+
 extern info_t *info;
 
 
@@ -110,7 +112,7 @@ void init_gdt(){
     //load my new gdtr
     set_gdtr(new_gdtr);
 
-    //load segments selectors
+    //on charge la nouvelle gdtr dans les registres de segments
     set_cs(gdt_krn_seg_sel(1));
 
     set_ds(gdt_krn_seg_sel(2));
@@ -118,13 +120,19 @@ void init_gdt(){
     set_ss(gdt_krn_seg_sel(2));
     set_fs(gdt_krn_seg_sel(2));
     set_gs(gdt_krn_seg_sel(2));
+}
 
+void f(){
+    char  src[64];
+    char *dst = 0;
+    memset(src, 0xff, 64);
+    
 }
 
 void tp(){
     
     //print this gdt
-    print_gdtr();   
+    //print_gdtr();   
 
     // init my own gdt
     init_gdt();
