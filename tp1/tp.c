@@ -22,8 +22,8 @@ void print_gdtr(){
     printf("                             ==SEGs DESC==    \n\n");
     printf("        nombre de segemnts       : %d\n", nb_segment);
     for(int i =0; i<nb_segment; i++){
+        printf("SEG n'%d\n", i+1);
         if(my_gdtr.desc[i].p == 1){
-            printf("SEG n'%d\n", i+1);
             printf("        segment limit            : %lx\n", my_gdtr.desc[i].limit_1 | (my_gdtr.desc[i].limit_2 << 16));
 
             printf("        adresse de base          : %lx\n", my_gdtr.desc[i].base_1 |( my_gdtr.desc[i].base_2 << 16) | (my_gdtr.desc[i].base_3 << 24));
@@ -72,8 +72,6 @@ void fill_gdt(seg_desc_t * gdtSegments, uint32_t limit, uint32_t base, uint64_t 
 
     //set avl : 0
     gdtSegments->avl = 0;
-
-    gdtSegments->raw = 0ULL;
 }   
 
 
