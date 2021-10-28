@@ -123,17 +123,34 @@ void init_gdt(){
 void f(){
     char  src[64];
     char *dst = 0;
+    printf("dst : %c\n", dst);
     memset(src, 0xff, 64);
-    
+
+    // init the third segment : 2 indice for data
+    fill_gdt(&gdtSegments[3],
+        /*limit addr max on 32 bits : 0xFFFFFF*/32,
+         /*base addr : 0*/0x600000 ,
+         /*type : rx*/ SEG_DESC_DATA_RW,
+         /*s because type data : 1 */1,
+         /*dpl : ring0 : 0*/ 0
+    );
+    set_es(gdt_krn_seg_sel(3));
+
+    _memcpy8(dst, src, 32);
+    printf("32\n");
+    _memcpy8(dst, src, 64);
+    printf("64\n");
+
 }
 
 void tp(){
     
     //print this gdt
-    //print_gdtr();   
+    print_gdtr();   
 
     // init my own gdt
     init_gdt();
     print_gdtr();
-    
+    f();
+    print_gdtr();
 }
