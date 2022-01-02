@@ -111,7 +111,6 @@ void init_gdt(){
 
     //load segments selectors
     set_cs(gdt_krn_seg_sel(1));
-
     set_ds(gdt_krn_seg_sel(2));
     set_es(gdt_krn_seg_sel(2));
     set_ss(gdt_krn_seg_sel(2));

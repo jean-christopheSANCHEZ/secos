@@ -26,14 +26,14 @@ void bp_trigger(){
 
 void tp()
 {
-    /*genere interruption en faisant un divide by zero*/
-    /*int a = 0;
+    //genere interruption en faisant un divide by zero
+    //int a = 0;
     int b = 10;
     int c = 0;
     while(1){
-        c = b/a;
+        c = b/2;
         printf("c = %d\n", c);
-    }*/
+    }
 
     idt_reg_t load_addr;
     get_idtr(load_addr);
