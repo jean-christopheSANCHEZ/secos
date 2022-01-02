@@ -81,11 +81,11 @@ void gestion_tache(){
     }
     
     set_cr3(tache_en_cours->pgd);
+    tss->s0.esp = tache_en_cours->espUser;
+    printf("Maj de tss\n");
     printf("valeur pgd %x\n", tache_en_cours->pgd);
     asm volatile("push %0" ::"i"(gdt_seg_sel(gdt_indice_data_r3, 3)));
     asm volatile("push %0" ::"r"(tache_en_cours->espUser));
-    tss->s0.esp = tache_en_cours->espUser;
-    printf("Maj de tss\n");
     save_flags(tache_en_cours->flags);
     tache_en_cours->flags = tache_en_cours->flags | EFLAGS_IF;
     asm volatile("push %0" :: "m"(tache_en_cours->flags));

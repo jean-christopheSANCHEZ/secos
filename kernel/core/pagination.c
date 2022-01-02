@@ -38,7 +38,7 @@ void init_pagination_kernel(){
     printf("end init kernel pagination\n");
 }
 
-void tata(pde32_t *pgd, pte32_t *pte){
+void page_user(pde32_t *pgd, pte32_t *pte){
     memset((void*)pgd, 0, PAGE_SIZE);
     for(int i =0;i<1024;i++){
         pg_set_entry(&pte[i], PG_USR|PG_RW, i);
@@ -49,21 +49,17 @@ void tata(pde32_t *pgd, pte32_t *pte){
 void init_pagination_user(){
     //tache 1 part
     pte32_t *ptb_tache_1 = ptbTACHE1;
-    tata(pgd_tache_1, ptb_tache_1);
-    tata(pgd_tache_1 + 1, ptb_tache_1 + 0x1000); //1ere rangée
-    tata(pgd_tache_1 + 2, ptb_tache_1 + 0x2000); //2eme rangée
-    tata(pgd_tache_1 + 3, ptb_tache_1 + 0x3000); //3eme rangée
-    tata(pgd_tache_1 + 4, ptb_tache_1 + 0x4000); //4eme rangée
-    tata(pgd_tache_1 + 5, ptb_tache_1 + 0x5000); //5eme rangée
+    page_user(pgd_tache_1, ptb_tache_1);
+    page_user(pgd_tache_1 + 1, ptb_tache_1 + 0x1000); //1ere rangée
+    page_user(pgd_tache_1 + 2, ptb_tache_1 + 0x2000); //2eme rangée
+    //page_user(pgd_tache_1 + 3, ptb_tache_1 + 0x3000); //3eme rangée pas nécessaire
 
     //tache 2 part
     pte32_t *ptb_tache_2 = ptbTACHE2;
-    tata(pgd_tache_2, ptb_tache_2);
-    tata(pgd_tache_2 + 1, ptb_tache_2 + 0x1000); //1ere rangée
-    tata(pgd_tache_2 + 2, ptb_tache_2 + 0x2000); //2eme rangée
-    tata(pgd_tache_2 + 3, ptb_tache_2 + 0x3000); //3eme rangée
-    tata(pgd_tache_2 + 4, ptb_tache_2 + 0x4000); //4eme rangée
-    tata(pgd_tache_2 + 5, ptb_tache_2 + 0x5000); //5eme rangée
+    page_user(pgd_tache_2, ptb_tache_2);
+    page_user(pgd_tache_2 + 1, ptb_tache_2 + 0x1000); //1ere rangée
+    page_user(pgd_tache_2 + 2, ptb_tache_2 + 0x2000); //2eme rangée
+    //page_user(pgd_tache_2 + 3, ptb_tache_2 + 0x3000); //3eme rangée pas nécessaire
 }
 
 void print_pages(pde32_t *pgd){
@@ -89,24 +85,12 @@ void translation(uint32_t *addr_virtuelle, uint32_t *addr_physique, pde32_t *pgd
     uint32_t ptb_idx = pt32_idx(addr_virtuelle);
 
     pte32_t  *ptb_tmp    = (pte32_t*)page_addr(pgd[pgd_idx].addr);
-    //memset((void*)ptb_tmp, 0, PAGE_SIZE);
     pg_set_entry(&ptb_tmp[ptb_idx], PG_USR|PG_RW, page_nr(addr_physique));
     //pg_set_entry(&pgd[pgd_idx], PG_USR|PG_RW, page_nr(ptb_tmp));
 
     //printf("PGD[0] = %p | addr_virtuelle = %p\n", pgd[0].raw, addr_virtuelle);
 }
 
-/*void translation2(uint32_t addr_virtuelle, uint32_t addr_physique, pde32_t *pgd){
-    uint32_t pgd_idx = pd32_idx(addr_virtuelle);
-    uint32_t ptb_idx = pt32_idx(addr_virtuelle);
-
-    pte32_t  *ptb_tmp    = (pte32_t*)&pgd[pgd_idx];
-    //memset((void*)ptb_tmp, 0, PAGE_SIZE);
-    pg_set_entry(&ptb_tmp[ptb_idx], PG_KRN|PG_RW, page_nr(addr_physique));
-    pg_set_entry(&pgd[pgd_idx], PG_KRN|PG_RW, page_nr(ptb_tmp));
-
-    printf("PGD[0] = %p | addr_virtuelle = %p\n", pgd[0].raw, addr_virtuelle);
-}*/
 
 void prepare_pagination(){
     init_pagination_kernel();
@@ -117,11 +101,6 @@ void prepare_pagination(){
     printf("MEM_VIRT_USER1 %x MEM_PHYSIQUE_USER12 %x MEM_VIRT_USER2 %x\n ", (uint32_t *)MEM_VIRT_USER1, (uint32_t *)MEM_PHYSIQUE_USER12, (uint32_t *)MEM_VIRT_USER2);
     /*print_pages(pgd_tache_1);
     print_pages(pgd_tache_2);
-    while(1);*/
-    //print_pages(pgd_kernel);
-    //print_pages(pgd_tache_1);
-    
+    while(1);*/    
     set_cr3(pgd_kernel);
-    //active_pagination();
-    
 }

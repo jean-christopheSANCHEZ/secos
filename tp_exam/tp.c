@@ -66,8 +66,6 @@ void tp()
     new_handler(0, index_irq0_idt, gestion_tache);
     //pagination
     prepare_pagination();
-    //user1();
-    //user2();
     // on doit initialiser tss puis les taches ici
     initTss(&tss);
     
