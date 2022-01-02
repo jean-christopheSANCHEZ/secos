@@ -68,7 +68,6 @@ void tp()
     prepare_pagination();
     // on doit initialiser tss puis les taches ici
     initTss(&tss);
-    
     ajouter_tache(PILE_USER1_0, PILE_USER1_3, user1, 0, 1, pgd_tache_1);
     ajouter_tache(PILE_USER2_0, PILE_USER2_3, user2, 1, 2, pgd_tache_2);
     active_pagination();

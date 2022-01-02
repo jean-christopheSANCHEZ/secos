@@ -87,7 +87,6 @@ void translation(uint32_t *addr_virtuelle, uint32_t *addr_physique, pde32_t *pgd
     pte32_t  *ptb_tmp    = (pte32_t*)page_addr(pgd[pgd_idx].addr);
     pg_set_entry(&ptb_tmp[ptb_idx], PG_USR|PG_RW, page_nr(addr_physique));
     //pg_set_entry(&pgd[pgd_idx], PG_USR|PG_RW, page_nr(ptb_tmp));
-
     //printf("PGD[0] = %p | addr_virtuelle = %p\n", pgd[0].raw, addr_virtuelle);
 }
 
